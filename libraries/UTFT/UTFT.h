@@ -67,6 +67,7 @@
 #define S6D1121_16		15
 #define	SSD1289LATCHED	16
 #define ILI9341_16		17
+#define ILI9341_16M		18
 //#define NOT_IN_USE	18
 #define SSD1289_8		19
 #define	SSD1963_800ALT	20

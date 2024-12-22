@@ -1,4 +1,4 @@
-case ILI9341_16:
+case ILI9341_16M:
     LCD_Write_COM(0xCB);  
     LCD_Write_DATA(0x39); 
     LCD_Write_DATA(0x2C); 
@@ -43,7 +43,7 @@ case ILI9341_16:
     LCD_Write_DATA(0x86);   //--
  
     LCD_Write_COM(0x36);    // Memory Access Control 
-    LCD_Write_DATA(0x0D);   // 0x0D //0x48 
+    LCD_Write_DATA(0x48);   
 
     LCD_Write_COM(0x3A);    
     LCD_Write_DATA(0x55); 

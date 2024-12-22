@@ -306,6 +306,9 @@ void UTFT::InitLCD(byte orientation)
 #ifndef DISABLE_ILI9341_16
 	#include "tft_drivers/ili9341/16/initlcd.h"
 #endif
+#ifndef DISABLE_ILI9341_16M
+	#include "tft_drivers/ili9341/16m/initlcd.h"
+#endif
 #ifndef DISABLE_R61581
 	#include "tft_drivers/r61581/initlcd.h"
 #endif
@@ -409,6 +412,9 @@ void UTFT::setXY(word x1, word y1, word x2, word y2)
 #endif
 #ifndef DISABLE_ILI9341_16
 	#include "tft_drivers/ili9341/16/setxy.h"
+#endif
+#ifndef DISABLE_ILI9341_16M
+	#include "tft_drivers/ili9341/16m/setxy.h"
 #endif
 #ifndef DISABLE_R61581
 	#include "tft_drivers/r61581/setxy.h"

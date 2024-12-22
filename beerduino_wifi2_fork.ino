@@ -1,3 +1,6 @@
+#include <TimeDup.h>
+
+
 #include <SPI.h>
 #include <UTFT.h>
 #include <UTouch.h>
@@ -6,9 +9,9 @@
 #include <SD.h>
 #include <PID_v1.h>
 #include <EEPROM.h>
-#include <Time.h>
 #include <Wire.h>
 #include <DS1307RTC.h>
+#include <Arduino.h>
 //#include <max6675.h>
 //#include <Servo.h>
 
@@ -36,11 +39,11 @@ extern unsigned int bgr1[0x3A55];
 extern unsigned int bgr2[0x10E0];
 
 
-UTFT          myGLCD(SSD1289,38,39,40,41);
+//UTFT          myGLCD(SSD1289,38,39,40,41);
 //UTFT          myGLCD(TFT01_32QVT,38,39,40,41);
-// UTFT myGLCD(ITDB32WC, 38,39,40,41); 
+//UTFT myGLCD(ITDB32WC, 38,39,40,41); 
 //UTFT myGLCD(CTE32_R2,38,39,40,41);
-//UTFT myGLCD(ILI9341_16,38,39,40,41);
+UTFT myGLCD(ILI9341_16,38,39,40,41);
 //UTFT myGLCD(ILI9341_S5P, 38, 39, 40, 41);
 //UTFT   myGLCD(ITDB32S,38,39,40,41);
 //UTFT myGLCD(ITDB32WC,38,39,40,41); 
@@ -160,18 +163,21 @@ void setup()
   else {recep = myButtons.addButton( 8, 170, 235,  60,"PE""\x8C""E""\x89""T""\x91");}
   }
 
-  zator = myButtons.addButton( 8,  40, 235,  60, "\x85""AT""\x86""PAH""\x86""E"); // кнопка "ЗАТИРАНИЕ"
-  varka = myButtons.addButton( 8,  105, 235,  60, "BAPKA");
+//  zator = myButtons.addButton( 8,  40, 235,  60, "\x85""AT""\x86""PAH""\x86""E"); // кнопка "ЗАТИРАНИЕ"
+  zator = myButtons.addButton( 8,  40, 235,  60, "MAISCHEN"); // кнопка "ЗАТИРАНИЕ"
+  varka = myButtons.addButton( 8,  105, 235,  60, "BRAUEN");
   stng  = myButtons.addButton( 250,  40, 60,  60, "x", BUTTON_SYMBOL);
   moyka  = myButtons.addButton( 250,  105, 60,  60, "p", BUTTON_SYMBOL);
   tim    =myButtons.addButton( 250, 170, 60,  60, "W", BUTTON_SYMBOL); // кнопка "Часы"
   stp    =myButtons.addButton( 273, 70, 40,  40, "4", BUTTON_SYMBOL); // кнопка "Стоп"
   minus = myButtons.addButton( 50,  60, 70,  70, "-");
   plus  = myButtons.addButton( 200, 60, 70,  70, "+"); 
-  dalee  =myButtons.addButton( 180,200, 130,  35, "\x82""A""\x88""EE >"); // кнопка "ДАЛЕЕ"
-  nazad  =myButtons.addButton( 10, 200, 130,  35, "< HA""\x85""A""\x82"); // кнопка "НАЗАД"
+//  dalee  =myButtons.addButton( 180,200, 130,  35, "\x82""A""\x88""EE >"); // кнопка "ДАЛЕЕ"
+//  nazad  =myButtons.addButton( 10, 200, 130,  35, "< HA""\x85""A""\x82"); // кнопка "НАЗАД"
+  dalee  =myButtons.addButton( 180,200, 130,  35, "WEITER >"); // кнопка "ДАЛЕЕ"
+  nazad  =myButtons.addButton( 10, 200, 130,  35, "< ZURUECK"); // кнопка "НАЗАД"
   zater  =myButtons.addButton( 180, 160, 130,  35, "3ATEPET""\x92");     // кнопка "ЗАТЕРЕТЬ"
-  varev  =myButtons.addButton( 10, 160, 130,  35, "BAP""\x86""T""\x92"); // кнопка "Варить"
+  varev  =myButtons.addButton( 10, 160, 130,  35, "BRAUEN"); // кнопка "Варить"
   ppm  =myButtons.addButton( 273,120, 40, 40, "+5"); // кнопка "+5мин"
   pproc= myButtons.addButton(  7,120, 40, 40, "P"); // кнопка "пауза"
  
