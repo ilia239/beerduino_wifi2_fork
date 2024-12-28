@@ -13,10 +13,9 @@
 //#include <Servo.h>
 
 
-
 #define END_CHAR '$'
 #define START_CHAR '!'
-
+//#define TOUCH_ORIENTATION  PORTRAIT
 //Servo servo;
 
 //пид
@@ -33,12 +32,13 @@ extern uint8_t BigFont[];
 extern uint8_t SevenSegNumFont[];
 extern uint8_t Dingbats1_XL[];
 extern unsigned int bgr1[0x3A55];
-extern unsigned int vinipuh[0x4C90];
+extern unsigned int bgr2[0x10E0];
+
 
 
 //UTFT          myGLCD(SSD1289,38,39,40,41);
 //UTFT          myGLCD(TFT01_32QVT,38,39,40,41);
-// UTFT myGLCD(ITDB32WC, 38,39,40,41); 
+//UTFT myGLCD(ITDB32WC, 38,39,40,41); 
 //UTFT myGLCD(CTE32_R2,38,39,40,41);
 UTFT myGLCD(ILI9341_16,38,39,40,41);
 //UTFT myGLCD(ILI9341_S5P, 38, 39, 40, 41);
@@ -47,6 +47,7 @@ UTFT myGLCD(ILI9341_16,38,39,40,41);
 UTouch        myTouch(6,5,4,3,2);
 
 UTFT_Buttons  myButtons(&myGLCD, &myTouch);
+
 
 const int chipSelect = 53;
 const int pin_relay=8;   // реле нагрева
@@ -154,22 +155,22 @@ void setup()
   myTouch.InitTouch();
   myTouch.setPrecision(PREC_MEDIUM);
   myGLCD.setFont(SmallFont);
-  if (!SD.begin(chipSelect)) {SDin=false; myGLCD.print("SD ""\x9F""ap""\xA4""a ""\xA2""e o""\x96\xA2""apy""\x9B""e""\xA2""a.", CENTER, 220);  } 
+  if (!SD.begin(chipSelect)) {SDin=false; myGLCD.print("SD karte nicht gefunden", CENTER, 220);  } 
   else { SDin=true; scanSD();
   if (kolfiles<1) {myGLCD.print("\x8B""a""\x9E\xA0\xAB"" c pe""\xA6""e""\xA3\xA4""a""\xA1\x9D"" ""\xA2""e ""\xA2""a""\x9E\x99""e""\xA2\xAB"".", CENTER, 220); }
   else {recep = myButtons.addButton( 8, 170, 235,  60,"PE""\x8C""E""\x89""T""\x91");}
   }
 
-  zator = myButtons.addButton( 8,  40, 235,  60, "\x85""AT""\x86""PAH""\x86""E"); // кнопка "ЗАТИРАНИЕ"
-  varka = myButtons.addButton( 8,  105, 235,  60, "BAPKA");
+  zator = myButtons.addButton( 8,  40, 235,  60, "Maischen"); // кнопка "ЗАТИРАНИЕ"
+  varka = myButtons.addButton( 8,  105, 235,  60, "Kochen");
   stng  = myButtons.addButton( 250,  40, 60,  60, "x", BUTTON_SYMBOL);
   moyka  = myButtons.addButton( 250,  105, 60,  60, "p", BUTTON_SYMBOL);
   tim    =myButtons.addButton( 250, 170, 60,  60, "W", BUTTON_SYMBOL); // кнопка "Часы"
   stp    =myButtons.addButton( 273, 70, 40,  40, "4", BUTTON_SYMBOL); // кнопка "Стоп"
   minus = myButtons.addButton( 50,  60, 70,  70, "-");
   plus  = myButtons.addButton( 200, 60, 70,  70, "+"); 
-  dalee  =myButtons.addButton( 180,200, 130,  35, "\x82""A""\x88""EE >"); // кнопка "ДАЛЕЕ"
-  nazad  =myButtons.addButton( 10, 200, 130,  35, "< HA""\x85""A""\x82"); // кнопка "НАЗАД"
+  dalee  =myButtons.addButton( 180,200, 130,  35, "weiter>"); // кнопка "ДАЛЕЕ"
+  nazad  =myButtons.addButton( 10, 200, 130,  35, "<zuruck"); // кнопка "НАЗАД"
   zater  =myButtons.addButton( 180, 160, 130,  35, "3ATEPET""\x92");     // кнопка "ЗАТЕРЕТЬ"
   varev  =myButtons.addButton( 10, 160, 130,  35, "BAP""\x86""T""\x92"); // кнопка "Варить"
   ppm  =myButtons.addButton( 273,120, 40, 40, "+5"); // кнопка "+5мин"
@@ -184,23 +185,24 @@ void setup()
 //  myGLCD.drawRoundRect (25,25,295,215);
   myGLCD.setFont(BigFont);
   myGLCD.drawBitmap (33,35, 137, 109, bgr1,1);
-  myGLCD.drawBitmap (170,65, 80, 80, vinipuh,1);
+  myGLCD.drawBitmap (170,108, 120, 36, bgr2,1);
+
 //  myGLCD.print ("BEERDUINO  v1.2",CENTER,50);
 
 //  if (rtctf)   myGLCD.print ("RTC" ,5,5); // индикация RTC
 // myGLCD.print ("M.""\x82\x83""M""\x86""H",175,45);
-delay (5000);
-  myGLCD.print ("Ilia wir brauchen " ,CENTER,160); 
-delay (3000);
-  myGLCD.print ("TOUCH",CENTER,180);
-delay (3000);
-  myGLCD.print ("EINSTELLUNGEN))",CENTER,200);
-delay (3000);
- myGLCD.print ("creator Vini PbIX",CENTER,12);
+delay (1000);
+  myGLCD.print ("3A""\x89""PE""\x8F""EHO" ,CENTER,160); 
+delay (1000);
+  myGLCD.print ("KOMMEP""\x8D""ECKOE",CENTER,180);
+delay (1000);
+  myGLCD.print ("\x86""C""\x89""O""\x88\x92""3OBAH""\x86""E",CENTER,200);
+delay (1000);
+ myGLCD.print ("creator M.""\x82\x83""M""\x86""H",CENTER,12);
 l_etap=read_EEPROM(20);
 if (l_etap==1 || l_etap==2) {drowMenu=0; menu=41;}
 
-delay (3000);
+delay (800);
 beeper();  
 
 
@@ -364,7 +366,8 @@ if (drowMenu!=0) {
   myButtons.enableButton (recep, true);
   myButtons.enableButton (stng, true);
   myButtons.enableButton (moyka, true);
-  if (!rtctf) myGLCD.print ("BEERDUINO v1.5",75,12);  
+  myGLCD.setFont(SmallFont);
+  if (!rtctf) myGLCD.print ("BEERDUINO v1.6",195,12);  
   else   myButtons.enableButton (tim, true);
  
   sp=clock()+60000000;
@@ -392,7 +395,7 @@ if (drowMenu==1) break;
   disableKnopok (drowMenu);
   bpm();
   drowMenu=1;
-  myGLCD.print ("KO""\x88\x86\x8D""ECTBO ""\x89""A""\x8A\x85",CENTER,10);
+  myGLCD.print ("Anzahl der Pausen",CENTER,10);
   myGLCD.setFont(SevenSegNumFont);
   myGLCD.printNumI(kol_pauz, CENTER, 70);
 
@@ -405,7 +408,7 @@ if (drowMenu==2) break;
   mpm(kol_pauz);
   drowMenu=2;
   myGLCD.setFont(SmallFont);
-  myGLCD.print ("TEM""\x89""EPAT""\x8A""PA ""\x89""A""\x8A\x85",15,25,90);
+  myGLCD.print ("Temperatur der Pausen",15,25,90);
   myGLCD.setFont(BigFont);
   for (int j=0; j <kol_pauz ; j++) {
   myGLCD.print(String(tp[j+1])+"\x7F", CENTER,12+38*j );
@@ -418,7 +421,8 @@ if (drowMenu==3) break;
   disableKnopok (drowMenu);
   mpm(kol_pauz);
   drowMenu=3;
-  myGLCD.print ("BPEM""\x95"" ""\x89""A""\x8A\x85",20,10,90);
+  myGLCD.setFont(SmallFont);
+  myGLCD.print ("Dauer der Pausen",20,10,90);
    for (int j=0; j <kol_pauz ; j++) {
    myGLCD.printNumI(vp[j+1], CENTER,12+38*j );}
 
@@ -429,13 +433,13 @@ if (drowMenu==4) break; // проверка
   disableKnopok (drowMenu);
   myButtons.enableButton (dalee, true); 
   myButtons.enableButton (nazad, true); 
-  myGLCD.print ("\x89""POBEPKA" , CENTER ,10);
+  myGLCD.print ("Uberprufung" , CENTER ,10);
   tp[0]=tp[1]+st[7];
   vp[0]=10;
   myGLCD.setFont(SmallFont);
   grafik ();
   for (int j=1; j <=kol_pauz ; j++) {
-  myGLCD.print ("\x89""A""\x8A\x85""A N"+String(j)+": "+"T="+String(tp[j])+"\x7F | B="+String(vp[j])+"\xA1\x9D\xA2"  , CENTER ,20+15*j);
+  myGLCD.print ("Pause N"+String(j)+": "+"T="+String(tp[j])+"\x7F | Zeit="+String(vp[j])+"min"  , CENTER ,20+15*j);
   }
   drowMenu=4;
 
@@ -445,7 +449,7 @@ if (drowMenu==5) break;
   disableKnopok (drowMenu);
   bpm();
   drowMenu=5;
-  myGLCD.print ("3A""\x82""EP""\x84""KA",CENTER,10);
+  myGLCD.print ("Verzogerung",CENTER,10);
   myGLCD.printNumI(zaderjka, CENTER, 85);
 break;
 
@@ -472,9 +476,9 @@ case 7: // процесс затирания
 if (drowMenu!=7) {
   nstad=1;
   disableKnopok (drowMenu);
-  myGLCD.print ("3AT""\x86""PAH""\x86""E" , CENTER ,15);
+  myGLCD.print ("Maischen" , CENTER ,15);
   oxi_pump ();
-  myGLCD.print ("TEM""\x89""EPAT""\x8A""PA 3ATOPA" , CENTER ,40);
+  myGLCD.print ("Maische Temperature" , CENTER ,40);
   drowMenu=7;
   windowStartTime = clock();
 
@@ -491,7 +495,7 @@ if ( drowMenu==10) break;
   disableKnopok (drowMenu);
   bpm(); 
   drowMenu=10;
-  myGLCD.print ("BPEM""\x95"" BAPK""\x86",CENTER,10);
+  myGLCD.print ("Kochzeit",CENTER,10);
   myGLCD.printNumI(vr_varki, CENTER,90 );
 
 
@@ -502,7 +506,7 @@ if (drowMenu==11) break;
   disableKnopok (drowMenu);
   bpm();
   drowMenu=11;
-  myGLCD.print ("KO""\x88\x86\x8D""ECTBO XME""\x88\x95",CENTER,10);
+  myGLCD.print ("Hopfenmenge",CENTER,10);
   myGLCD.setFont(SevenSegNumFont);
   myGLCD.printNumI(kol_hop, CENTER,70 );
 
@@ -514,8 +518,8 @@ if (drowMenu==12) break;
   disableKnopok (drowMenu);
   mpm(kol_hop);
   drowMenu=12;
-
-  myGLCD.print ("BPEM""\x95"" XME""\x88\x95" ,20,10,90);
+myGLCD.setFont(SmallFont);
+  myGLCD.print ("Zeitpunkt der Hopfengabe" ,20,10,90);
    for (int j=0; j <kol_hop ; j++) {
    vh[j]=vr_varki-2*j;
    myGLCD.printNumI(vh[j], CENTER,12+38*j );}
@@ -528,15 +532,15 @@ if (drowMenu==13) break;
   disableKnopok (drowMenu);
   myButtons.enableButton (dalee, true); 
   myButtons.enableButton (nazad, true); 
-  myGLCD.print ("\x89""POBEPKA" , CENTER ,10);
+  myGLCD.print ("Uberprufung" , CENTER ,10);
   myGLCD.setFont(SmallFont);
-  myGLCD.print ( "BAPKA " +  String(vr_varki)+"\xA1\x9D\xA2", CENTER ,33);
+  myGLCD.print ( "Kochen " +  String(vr_varki)+"min", CENTER ,33);
   myGLCD.drawRect (10,170,310,171);
-  myGLCD.print ("0\xA1\x9D\xA2" ,10,175);
-  myGLCD.print (String(vr_varki)+"\xA1\x9D\xA2" ,270,175);
+  myGLCD.print ("min" ,10,175);
+  myGLCD.print (String(vr_varki)+"min" ,270,175);
 
   for (int j=0; j <kol_hop ; j++) {
-  myGLCD.print ("XME""\x88\x92"" N"+String(j+1)+ "  "+String(vh[j])+" \xA1\x9D\xA2", CENTER ,50+15*j);
+  myGLCD.print ("Hopfen"" N"+String(j+1)+ "  "+String(vh[j])+" min", CENTER ,50+15*j);
   float hopnsh=10+300*((float)(vr_varki-vh[j])/(float)vr_varki);
   myGLCD.drawCircle(hopnsh,170,3);
   myGLCD.printNumI ( j+1  ,hopnsh ,150);
@@ -552,9 +556,9 @@ if (drowMenu!=14) {
   nstad=2;
   disableKnopok (drowMenu);
   myButtons.enableButton (stp, true); 
-  myGLCD.print ("BAPKA" , CENTER ,15);
+  myGLCD.print ("Kochen" , CENTER ,15);
   if (st[11]==1)  oxi_pump ();
-  myGLCD.print ("TEM""\x89""EPAT""\x8A""PA C""\x8A""C""\x88""A" , CENTER ,40);
+  myGLCD.print ("Maische Temperatur" , CENTER ,40);
   myButtons.enableButton (minus_m[4], true);
   myButtons.enableButton (plus_m[4], true);
   myGLCD.print(String(shim), CENTER,164 );
@@ -697,18 +701,18 @@ if (drowMenu==30) break;
   myButtons.enableButton (dalee, true); 
   myButtons.enableButton (nazad, true); 
   myGLCD.setFont(SmallFont);
-  myGLCD.print ("Kp,Ki,Kd,WS - ""\xA3""apa""\xA1""e""\xA4""p""\xAB"" ""\x89\x86\x82",10,15);
-  myGLCD.print ("pT - k""a""\xA0\x9D\x96""po""\x97""ka ""\xA4""ep""\xA1""o""\xA1""e""\xA4""pa",10,30);
-  myGLCD.print ("Bo - ""\xA4""e""\xA1\xA3""epa""\xA4""ypa ""\x9F\x9D\xA3""e""\xA2\x9D\xAF",10,45);
-  myGLCD.print ("PP - ""\xA3""po""\x99""y""\x97\x9F""a ""\xA3""o""\xA1\xA3\xAB",10,60);
-  myGLCD.print ("DH - ""\x99""e""\xA0\xAC\xA4""a o""\xA4\xA2""oc""\x9D\xA4""e""\xA0\xAC\xA2""o 1""\x9E"" ""\xA3""ay""\x9C\xAB",10,75);
-  myGLCD.print ("TV - ""\xA4""e""\xA1\xA3""epa""\xA4""ypa c""\xA0\x9D\x97""a",10,90);
-  myGLCD.print ("Se - ""\xA1""ec""\xA4""o yc""\xA4""a""\xA2""o""\x97\x9F\x9D"" ""\xA4""ep""\xA1""o""\xA1""e""\xA4""pa",10,105);
-  myGLCD.print ("PS - ""\xA4""e""\xA1\xA3""epa""\xA4""ypa oc""\xA4""a""\xA2""o""\x97\x9F\x9D"" ""\xA3""o""\xA1\xA3\xAB",10,120);
-  myGLCD.print ("DB - ""\xA3""o""\xA1\xA3""a ""\x97""o ""\x97""pe""\xA1\xAF"" ""\x97""ap""\x9F\x9D",10,135);
-  myGLCD.print ("PH - ""pe""\x9B\x9D\xA1\xAB"" ""\xA3""o""\xA1\xA3\xAB",10,150);
-  myGLCD.print ("PC - ""\x97""pe""\xA1\xAF"" pa""\x96""o""\xA4\xAB"" ""\xA3""o""\xA1\xA3\xAB",10,165);
-  myGLCD.print ("PR - ""\x97""pe""\xA1\xAF"" o""\xA4\x99\xAB""xa ""\xA3""o""\xA1\xA3\xAB",10,180);  
+  myGLCD.print ("Kp,Ki,Kd,WS - ""PID Parametr",10,15);
+  myGLCD.print ("pT - ""Kalibrierung des Thermometers",10,30);
+  myGLCD.print ("Bo - ""Siedetemperatur",10,45);
+  myGLCD.print ("PP - ""Pumpe durchspulen",10,60);
+  myGLCD.print ("DH - ""Delta im Verhaltnis zur ersten Pause",10,75);
+  myGLCD.print ("TV - ""Ablaustemperatur""a",10,90);
+  myGLCD.print ("Se - ""Stelle der Thermometerinstallation",10,105);
+  myGLCD.print ("PS - ""Pumpenstop Temperatur",10,120);
+  myGLCD.print ("DB - ""Pumpe wahrend des Kochens",10,135);
+  myGLCD.print ("PH - ""Pumpenmodus",10,150);
+  myGLCD.print ("PC - ""Betriebszeit der Pumpe",10,165);
+  myGLCD.print ("PR - ""Ruhezeit der Pumpe",10,180);  
 
 
 break;
@@ -719,7 +723,7 @@ if (drowMenu!=31) {
   mpm(5);
   drowMenu=31;
 
-   myGLCD.print ("HACTPO""\x87""K""\x86"" 1" ,20,10,90);
+   myGLCD.print ("Einstellung"" 1" ,20,10,90);
    myGLCD.print("Kp", 275,12 );
    myGLCD.print("Ki", 275,50 );
    myGLCD.print("Kd", 275,88 );
@@ -739,7 +743,7 @@ if (drowMenu!=32) {
   mpm(5);
   drowMenu=32;
 
-   myGLCD.print ("HACTPO""\x87""K""\x86"" 2" ,20,10,90);
+   myGLCD.print ("Einstellung"" 2" ,20,10,90);
    myGLCD.print("Bo", 275,12 ); // Температура кипения
    myGLCD.print("PP", 275,50 ); // Продувка помпы
    myGLCD.print("DH", 275,88 ); // Дельта нагрева перед 1-й паузой
@@ -765,7 +769,7 @@ if (drowMenu!=33) {
   mpm(5);
   drowMenu=33;
 
-   myGLCD.print ("HACTPO""\x87""K""\x86"" 3" ,20,10,90);
+   myGLCD.print ("Einstellung"" 3" ,20,10,90);
    myGLCD.print("PS", 275,12 ); //Остановка помпы
    myGLCD.print("DB", 275,50 ); //Помпа во время кипячения
    myGLCD.print("PH", 275,88 ); //Помпа во время работы ТЭНа
@@ -787,7 +791,7 @@ break;
 case 34:
 menu=0;
 disableKnopok (drowMenu);
-myGLCD.print ("COXPAHEHO" ,CENTER , 110);
+myGLCD.print ("Gespeichert" ,CENTER , 110);
 upload_settings ();
 break;
 
@@ -796,13 +800,13 @@ case 40:
 if (drowMenu!=40) {
 drowMenu=40;
 disableKnopok (drowMenu);
-myGLCD.print ("\x89""POM""\x91""BKA C""\x86""CTEM""\x91",CENTER,5);
+myGLCD.print ("Systemspulung",CENTER,5);
 oxi_pump ();
 myButtons.enableButton (dalee, true);
 }
  SSColor ();
 if (t_zatora<st[10] )  {digitalWrite (pin_pump ,HIGH);
-myGLCD.print (" PA""\x80""OTAET ""\x89""OM""\x89""A  ",CENTER,145);
+myGLCD.print (" Pumpe Eingeschaltet  ",CENTER,145);
 }
 else {digitalWrite (pin_pump ,LOW);
 myGLCD.print ("\x89""OM""\x89""A OCTAHOB""\x88""EHA",CENTER,145);
@@ -815,7 +819,7 @@ drowMenu=41;
 disableKnopok (drowMenu);
 myButtons.enableButton (dalee, true); 
 myButtons.enableButton (nazad, true); 
-myGLCD.print ("C""\x80""O""\x87"" ""\x89\x86""TAH""\x86\x95",CENTER,80);
+myGLCD.print ("Stromausfall",CENTER,80);
 break;
 
 //--------------------Настройки Времени —---------------------------
