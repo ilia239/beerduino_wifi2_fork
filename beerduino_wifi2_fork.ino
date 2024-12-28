@@ -1,6 +1,3 @@
-#include <TimeDup.h>
-
-
 #include <SPI.h>
 #include <UTFT.h>
 #include <UTouch.h>
@@ -9,9 +6,9 @@
 #include <SD.h>
 #include <PID_v1.h>
 #include <EEPROM.h>
+#include <Time.h>
 #include <Wire.h>
 #include <DS1307RTC.h>
-#include <Arduino.h>
 //#include <max6675.h>
 //#include <Servo.h>
 
@@ -36,12 +33,12 @@ extern uint8_t BigFont[];
 extern uint8_t SevenSegNumFont[];
 extern uint8_t Dingbats1_XL[];
 extern unsigned int bgr1[0x3A55];
-extern unsigned int bgr2[0x10E0];
+extern unsigned int vinipuh[0x4C90];
 
 
 //UTFT          myGLCD(SSD1289,38,39,40,41);
 //UTFT          myGLCD(TFT01_32QVT,38,39,40,41);
-//UTFT myGLCD(ITDB32WC, 38,39,40,41); 
+// UTFT myGLCD(ITDB32WC, 38,39,40,41); 
 //UTFT myGLCD(CTE32_R2,38,39,40,41);
 UTFT myGLCD(ILI9341_16,38,39,40,41);
 //UTFT myGLCD(ILI9341_S5P, 38, 39, 40, 41);
@@ -163,21 +160,18 @@ void setup()
   else {recep = myButtons.addButton( 8, 170, 235,  60,"PE""\x8C""E""\x89""T""\x91");}
   }
 
-//  zator = myButtons.addButton( 8,  40, 235,  60, "\x85""AT""\x86""PAH""\x86""E"); // кнопка "ЗАТИРАНИЕ"
-  zator = myButtons.addButton( 8,  40, 235,  60, "MAISCHEN"); // кнопка "ЗАТИРАНИЕ"
-  varka = myButtons.addButton( 8,  105, 235,  60, "BRAUEN");
+  zator = myButtons.addButton( 8,  40, 235,  60, "\x85""AT""\x86""PAH""\x86""E"); // кнопка "ЗАТИРАНИЕ"
+  varka = myButtons.addButton( 8,  105, 235,  60, "BAPKA");
   stng  = myButtons.addButton( 250,  40, 60,  60, "x", BUTTON_SYMBOL);
   moyka  = myButtons.addButton( 250,  105, 60,  60, "p", BUTTON_SYMBOL);
   tim    =myButtons.addButton( 250, 170, 60,  60, "W", BUTTON_SYMBOL); // кнопка "Часы"
   stp    =myButtons.addButton( 273, 70, 40,  40, "4", BUTTON_SYMBOL); // кнопка "Стоп"
   minus = myButtons.addButton( 50,  60, 70,  70, "-");
   plus  = myButtons.addButton( 200, 60, 70,  70, "+"); 
-//  dalee  =myButtons.addButton( 180,200, 130,  35, "\x82""A""\x88""EE >"); // кнопка "ДАЛЕЕ"
-//  nazad  =myButtons.addButton( 10, 200, 130,  35, "< HA""\x85""A""\x82"); // кнопка "НАЗАД"
-  dalee  =myButtons.addButton( 180,200, 130,  35, "WEITER >"); // кнопка "ДАЛЕЕ"
-  nazad  =myButtons.addButton( 10, 200, 130,  35, "< ZURUECK"); // кнопка "НАЗАД"
+  dalee  =myButtons.addButton( 180,200, 130,  35, "\x82""A""\x88""EE >"); // кнопка "ДАЛЕЕ"
+  nazad  =myButtons.addButton( 10, 200, 130,  35, "< HA""\x85""A""\x82"); // кнопка "НАЗАД"
   zater  =myButtons.addButton( 180, 160, 130,  35, "3ATEPET""\x92");     // кнопка "ЗАТЕРЕТЬ"
-  varev  =myButtons.addButton( 10, 160, 130,  35, "BRAUEN"); // кнопка "Варить"
+  varev  =myButtons.addButton( 10, 160, 130,  35, "BAP""\x86""T""\x92"); // кнопка "Варить"
   ppm  =myButtons.addButton( 273,120, 40, 40, "+5"); // кнопка "+5мин"
   pproc= myButtons.addButton(  7,120, 40, 40, "P"); // кнопка "пауза"
  
@@ -190,23 +184,23 @@ void setup()
 //  myGLCD.drawRoundRect (25,25,295,215);
   myGLCD.setFont(BigFont);
   myGLCD.drawBitmap (33,35, 137, 109, bgr1,1);
-  myGLCD.drawBitmap (170,108, 120, 36, bgr2,1);
+  myGLCD.drawBitmap (170,65, 80, 80, vinipuh,1);
 //  myGLCD.print ("BEERDUINO  v1.2",CENTER,50);
 
 //  if (rtctf)   myGLCD.print ("RTC" ,5,5); // индикация RTC
 // myGLCD.print ("M.""\x82\x83""M""\x86""H",175,45);
-delay (1000);
-  myGLCD.print ("3A""\x89""PE""\x8F""EHO" ,CENTER,160); 
-delay (1000);
-  myGLCD.print ("KOMMEP""\x8D""ECKOE",CENTER,180);
-delay (1000);
-  myGLCD.print ("\x86""C""\x89""O""\x88\x92""3OBAH""\x86""E",CENTER,200);
-delay (1000);
- myGLCD.print ("creator M.""\x82\x83""M""\x86""H",CENTER,12);
+delay (5000);
+  myGLCD.print ("Ilia wir brauchen " ,CENTER,160); 
+delay (3000);
+  myGLCD.print ("TOUCH",CENTER,180);
+delay (3000);
+  myGLCD.print ("EINSTELLUNGEN))",CENTER,200);
+delay (3000);
+ myGLCD.print ("creator Vini PbIX",CENTER,12);
 l_etap=read_EEPROM(20);
 if (l_etap==1 || l_etap==2) {drowMenu=0; menu=41;}
 
-delay (800);
+delay (3000);
 beeper();  
 
 
