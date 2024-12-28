@@ -1,3 +1,5 @@
+#include <UTFT_Buttons.h>
+
 #include <SPI.h>
 #include <UTFT.h>
 #include <UTouch.h>
